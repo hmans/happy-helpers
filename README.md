@@ -1,6 +1,6 @@
 # Niles
 
-TODO: Write a gem description
+A set of mixins providing useful view helpers for custom Rack applications or frameworks.
 
 ## Installation
 
