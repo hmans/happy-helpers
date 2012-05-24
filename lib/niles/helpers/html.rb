@@ -21,8 +21,9 @@ module Niles
         t.chomp("\n").gsub(/\n/, '&#x000A;').gsub(/\r/, '')
       end
 
-      def link_to(name, target, options = {})
-        html_tag(:a, options.merge(href: url_for(target))) { name }
+      def link_to(name, *target)
+        options = target.last.is_a?(Hash) ? target.pop : {}
+        html_tag(:a, options.merge(href: url_for(*target))) { name }
       end
 
       def url_for(*what)
