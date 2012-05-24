@@ -21,6 +21,19 @@ module Niles
         t.chomp("\n").gsub(/\n/, '&#x000A;').gsub(/\r/, '')
       end
 
+      def link_to(name, target, options = {})
+        html_tag(:a, options.merge(href: url_for(target))) { name }
+      end
+
+      def url_for(what)
+        case what
+          when String then what
+          when Symbol then "/#{what}"
+          when Array  then target.map { |i| url_for i }.join
+          else what.to_s
+        end
+      end
+
       def capture(*args, &block)
         # TODO: support more than just HAML. :P~
         capture_haml(*args, &block)
