@@ -25,12 +25,16 @@ module Niles
         html_tag(:a, options.merge(href: url_for(target))) { name }
       end
 
-      def url_for(what)
-        case what
-          when String then what
-          when Symbol then "/#{what}"
-          when Array  then target.map { |i| url_for i }.join
-          else what.to_s
+      def url_for(*what)
+        return what.first if what.size == 1 && what.first.is_a?(String)
+
+        what.flatten.inject('') do |url, item|
+          url << "/%s" % case item
+            when String, Symbol then item.to_s
+            else "%s/%s" % [item.class.to_s.tableize.pluralize, item.try(:to_param) || item.try(:to_id) || item.try(:id)]
+          end
+
+          url
         end
       end
 
