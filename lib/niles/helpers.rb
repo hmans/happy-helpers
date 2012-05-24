@@ -4,8 +4,8 @@ require 'niles/helpers/i18n'
 
 module Niles
   module Helpers
-    extend Html
-    extend I18n
-    extend Forms
+    include Html
+    include I18n
+    include Forms
   end
 end
