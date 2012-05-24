@@ -20,6 +20,11 @@ module Niles
       def preserve(t)
         t.chomp("\n").gsub(/\n/, '&#x000A;').gsub(/\r/, '')
       end
+
+      def capture(*args, &block)
+        # TODO: support more than just HAML. :P~
+        capture_haml(*args, &block)
+      end
     end
   end
 end
