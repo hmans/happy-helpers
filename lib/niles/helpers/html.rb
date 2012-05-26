@@ -14,7 +14,8 @@ module Niles
       end
 
       def escape_html(t)
-        Rack::Utils.escape_html(t.to_s)
+        #Rack::Utils.escape_html(t.to_s)
+        CGI::escape_html(t.to_s)
       end
 
       def preserve(t)
