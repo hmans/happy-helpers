@@ -1,6 +1,24 @@
 module Niles
   module Helpers
     module Forms
+      def radio_buttons(name, options = {})
+        "".tap do |s|
+          options[:options].each do |option|
+            if option.is_a?(Array)
+              label = option[0]
+              value = option[1]
+            else
+              label = option
+              value = option
+            end
+
+            s << html_tag(:label) do
+              html_tag(:input, type: 'radio', name: name, value: value) + label
+            end
+          end
+        end
+      end
+
       def date_time_select(name, options = {})
         options = {
           :years => 1976..2012,
@@ -109,6 +127,8 @@ module Niles
                 s << helpers.html_tag(:textarea, field_options) { helpers.preserve(helpers.escape_html(options[:value])) }
               when :datetime
                 s << helpers.date_time_select(field_options.delete(:name), value: options[:value])
+              when :radio
+                s << helpers.radio_buttons(field_options.delete(:name), options: options[:options] || ['Y', 'N'])
               else
                 s << helpers.html_tag(:input, field_options.merge(type: 'text', value: options[:value]))
               end
