@@ -98,6 +98,7 @@ module Niles
           options[:as] ||= case options[:value]
             when Date           then :date
             when DateTime, Time then :datetime
+            when Boolean, TrueClass, FalseClass then :checkbox
             else :text
           end
 
@@ -118,18 +119,23 @@ module Niles
           # Output wrapper tag with contents
           helpers.html_tag :div, wrapper_options do
             String.new.tap do |s|
-              # Add label
-              s << helpers.html_tag(:label) { options[:label] }
-
               # Add actual input field
               case options[:as].to_sym
               when :textarea
+                s << helpers.html_tag(:label, class: 'for-field') { options[:label] }
                 s << helpers.html_tag(:textarea, field_options) { helpers.preserve(helpers.escape_html(options[:value])) }
               when :datetime
+                s << helpers.html_tag(:label, class: 'for-field') { options[:label] }
                 s << helpers.date_time_select(field_options.delete(:name), value: options[:value])
               when :radio
                 s << helpers.radio_buttons(field_options.delete(:name), options: options[:options] || ['Y', 'N'])
+              when :checkbox
+                s << helpers.html_tag(:input, field_options.merge(type: 'checkbox'))
+                s << helpers.html_tag(:label, class: 'for-checkbox') do
+                  (options[:text] || label_text(name))
+                end
               else
+                s << helpers.html_tag(:label, class: 'for-field') { options[:label] }
                 s << helpers.html_tag(:input, field_options.merge(type: 'text', value: options[:value]))
               end
 
