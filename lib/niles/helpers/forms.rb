@@ -130,7 +130,8 @@ module Niles
               when :radio
                 s << helpers.radio_buttons(field_options.delete(:name), options: options[:options] || ['Y', 'N'])
               when :checkbox
-                s << helpers.html_tag(:input, field_options.merge(type: 'checkbox'))
+                s << helpers.html_tag(:input, field_options.merge(type: 'hidden', value: '0'))
+                s << helpers.html_tag(:input, field_options.merge(type: 'checkbox', value: '1', checked: options[:value] ? true : false))
                 s << helpers.html_tag(:label, class: 'for-checkbox') do
                   (options[:text] || label_text(name))
                 end
