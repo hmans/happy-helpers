@@ -19,47 +19,55 @@ module Niles
         end
       end
 
-      def date_time_select(name, options = {})
+      def date_time_select_tag(name, value = nil, options = {})
         options = {
-          :years => 1976..2012,
+          :years => (Time.now.year - 10)..(Time.now.year + 10),
           :months => 1..12,
           :days => 1..31,
           :month_formatter => ->(i) { translate("date.month_names")[i] },
-          :day_formatter   => ->(i) { "#{i}." },
-          :value => Time.now
+          :day_formatter   => ->(i) { "#{i}." }
         }.merge(options)
+        value ||= Time.now
 
         year_select = html_tag(:select, name: "#{name}[year]") do
           options[:years].map do |year|
-            html_tag(:option, value: year, selected: year == options[:value].try(:year)) { year }
+            html_tag(:option, value: year, selected: year == value.try(:year)) { year }
           end.join
         end
 
         month_select = html_tag(:select, name: "#{name}[month]") do
           options[:months].map do |month|
-            html_tag(:option, value: month, selected: month == options[:value].try(:month)) { options[:month_formatter].call(month) }
+            html_tag(:option, value: month, selected: month == value.try(:month)) { options[:month_formatter].call(month) }
           end.join
         end
 
         day_select = html_tag(:select, name: "#{name}[day]") do
           options[:days].map do |day|
-            html_tag(:option, value: day, selected: day == options[:value].try(:day)) { options[:day_formatter].call(day) }
+            html_tag(:option, value: day, selected: day == value.try(:day)) { options[:day_formatter].call(day) }
           end.join
         end
 
         hour_select = html_tag(:select, name: "#{name}[hour]") do
           (0..23).map do |hour|
-            html_tag(:option, value: hour, selected: hour == options[:value].try(:hour)) { sprintf "%02d", hour }
+            html_tag(:option, value: hour, selected: hour == value.try(:hour)) { sprintf "%02d", hour }
           end.join
         end
 
         minute_select = html_tag(:select, name: "#{name}[minute]") do
           (0..59).map do |minute|
-            html_tag(:option, value: minute, selected: minute == options[:value].try(:minute)) { sprintf "%02d", minute }
+            html_tag(:option, value: minute, selected: minute == value.try(:min)) { sprintf "%02d", minute }
           end.join
         end
 
         "#{day_select} #{month_select} #{year_select} - #{hour_select} : #{minute_select} Uhr"
+      end
+
+      def checkbox_tag(name, value = false, options = {})
+        "".tap do |s|
+          s << html_tag(:input, name: name, type: 'hidden', value: '0')
+          s << html_tag(:input, name: name, type: 'checkbox', value: '1', checked: value ? true : false)
+          s << html_tag(:label, class: 'for-checkbox') { options[:text] || name }
+        end
       end
 
       def form_for(resource, options = {}, &block)
@@ -87,14 +95,13 @@ module Niles
 
         def input(name, options = {})
           name = name.to_s
+          value = resource.send(name)
 
           # Set default options
           options = {
-            label: "%s:" % label_text(name),
-            value: resource.send(name)
+            label: "%s:" % label_text(name)
           }.merge(options)
 
-          # FIXME
           options[:as] ||= case options[:value]
             when Date           then :date
             when DateTime, Time then :datetime
@@ -120,24 +127,20 @@ module Niles
           helpers.html_tag :div, wrapper_options do
             String.new.tap do |s|
               # Add actual input field
-              case options[:as].to_sym
+              case options.delete(:as).to_sym
               when :textarea
                 s << helpers.html_tag(:label, class: 'for-field') { options[:label] }
-                s << helpers.html_tag(:textarea, field_options) { helpers.preserve(helpers.escape_html(options[:value])) }
+                s << helpers.html_tag(:textarea, field_options) { helpers.preserve(helpers.escape_html(value)) }
               when :datetime
                 s << helpers.html_tag(:label, class: 'for-field') { options[:label] }
-                s << helpers.date_time_select(field_options.delete(:name), value: options[:value])
+                s << helpers.date_time_select_tag(field_options.delete(:name), value, options)
               when :radio
-                s << helpers.radio_buttons(field_options.delete(:name), options: options[:options] || ['Y', 'N'])
+                s << helpers.radio_buttons(field_options.delete(:name), options: (options.delete(:options) || ['Y', 'N']))
               when :checkbox
-                s << helpers.html_tag(:input, field_options.merge(type: 'hidden', value: '0'))
-                s << helpers.html_tag(:input, field_options.merge(type: 'checkbox', value: '1', checked: options[:value] ? true : false))
-                s << helpers.html_tag(:label, class: 'for-checkbox') do
-                  (options[:text] || label_text(name))
-                end
+                s << helpers.checkbox_tag(field_options.delete(:name), value, options.merge(:text => options[:text] || label_text(name)))
               else
                 s << helpers.html_tag(:label, class: 'for-field') { options[:label] }
-                s << helpers.html_tag(:input, field_options.merge(type: 'text', value: options[:value]))
+                s << helpers.html_tag(:input, field_options.merge(type: 'text', value: value))
               end
 
               # Add error message, if necessary
