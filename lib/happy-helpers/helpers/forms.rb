@@ -24,8 +24,8 @@ module HappyHelpers
           :years => (Time.now.year - 10)..(Time.now.year + 10),
           :months => 1..12,
           :days => 1..31,
-          :month_formatter => ->(i) { translate("date.month_names")[i] },
-          :day_formatter   => ->(i) { "#{i}." }
+          :month_formatter => lambda { |i| translate("date.month_names")[i] },
+          :day_formatter   => lambda { |i| "#{i}." }
         }.merge(options)
         value ||= Time.now
 
