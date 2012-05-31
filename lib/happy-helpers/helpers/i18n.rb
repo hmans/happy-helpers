@@ -1,4 +1,4 @@
-module Niles
+module HappyHelpers
   module Helpers
     module I18n
       def translate(*args)

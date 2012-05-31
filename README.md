@@ -1,4 +1,4 @@
-# Niles
+# HappyHelpers
 
 A set of mixins providing useful view helpers for custom Rack applications or frameworks.
 
@@ -6,7 +6,7 @@ A set of mixins providing useful view helpers for custom Rack applications or fr
 
 Add this line to your application's Gemfile:
 
-    gem 'niles'
+    gem 'happy-helpers'
 
 And then execute:
 
@@ -14,7 +14,7 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install niles
+    $ gem install happy-helpers
 
 ## Usage
 

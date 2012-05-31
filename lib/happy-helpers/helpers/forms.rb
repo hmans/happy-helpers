@@ -1,4 +1,4 @@
-module Niles
+module HappyHelpers
   module Helpers
     module Forms
       def radio_buttons(name, options = {})

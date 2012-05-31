@@ -1,4 +1,4 @@
-module Niles
+module HappyHelpers
   module Utils
     module DateParameterConverter
       class << self

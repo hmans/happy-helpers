@@ -1,6 +1,6 @@
 require 'tilt'
 
-module Niles
+module HappyHelpers
   module Templates
     def self.render(name, scope = nil, variables = {}, &block)
       load("views/%s" % name).render(scope, variables, &block)

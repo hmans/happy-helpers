@@ -1,4 +1,4 @@
-module Niles
+module HappyHelpers
   module Helpers
     module Html
       def html_tag(name, options = nil, escape = true, &block)
