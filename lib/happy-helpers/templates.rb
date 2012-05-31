@@ -9,9 +9,9 @@ module HappyHelpers
     def self.load(name)
       if false # Freddie.env.production?
         @templates ||= {}
-        @templates[name] ||= Tilt.new(name, default_encoding: 'utf-8')
+        @templates[name] ||= Tilt.new(name, :default_encoding => 'utf-8')
       else
-        Tilt.new(name, default_encoding: 'utf-8')
+        Tilt.new(name, :default_encoding => 'utf-8')
       end
     end
   end
