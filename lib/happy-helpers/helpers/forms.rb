@@ -135,7 +135,7 @@ module HappyHelpers
                 s << helpers.html_tag(:label, :class => 'for-field') { options[:label] }
                 s << helpers.date_time_select_tag(field_options.delete(:name), value, options)
               when :radio
-                s << helpers.radio_buttons(field_options.delete(:name), options: (options.delete(:options) || ['Y', 'N']))
+                s << helpers.radio_buttons(field_options.delete(:name), :options => (options.delete(:options) || ['Y', 'N']))
               when :checkbox
                 s << helpers.checkbox_tag(field_options.delete(:name), value, options.merge(:text => options[:text] || label_text(name)))
               else
