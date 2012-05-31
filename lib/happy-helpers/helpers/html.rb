@@ -24,7 +24,7 @@ module HappyHelpers
 
       def link_to(name, *target)
         options = target.last.is_a?(Hash) ? target.pop : {}
-        html_tag(:a, options.merge(href: url_for(*target))) { name }
+        html_tag(:a, options.merge(:href => url_for(*target))) { name }
       end
 
       def url_for(*what)
