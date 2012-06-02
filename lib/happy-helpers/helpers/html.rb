@@ -28,16 +28,17 @@ module HappyHelpers
       end
 
       def url_for(*what)
-        return what.first if what.size == 1 && what.first.is_a?(String)
-
-        what.flatten.inject('') do |url, item|
+        result = what.flatten.inject('') do |url, item|
           url << "/%s" % case item
             when String, Symbol then item.to_s
+            when NilClass then "/"
             else "%s/%s" % [item.class.to_s.tableize.pluralize, item.try(:to_param) || item.try(:to_id) || item.try(:id)]
           end
 
           url
-        end
+        end.gsub(/\/{2,}/, '/').chomp('/')
+
+        result == "" ? '/' : result
       end
 
       def capture(*args, &block)
