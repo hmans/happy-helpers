@@ -1,6 +1,6 @@
 # -*- encoding: utf-8 -*-
-
 require 'i18n'
+require 'money'
 
 module HappyHelpers
   module Helpers
