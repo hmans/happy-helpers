@@ -1,3 +1,3 @@
 module HappyHelpers
-  VERSION = "0.1.0.pre7"
+  VERSION = "0.1.0.pre8"
 end
