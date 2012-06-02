@@ -38,6 +38,10 @@ module HappyHelpers
         it "is can be cascaded" do
           url_for(url_for(:foo, :bar), '123', url_for('woop')).should == '/foo/bar/123/woop'
         end
+
+        it "doesn't modify strings containing complete URLs" do
+          url_for('http://www.test.com').should == 'http://www.test.com'
+        end
       end
     end
   end

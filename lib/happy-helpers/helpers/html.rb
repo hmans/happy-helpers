@@ -28,6 +28,8 @@ module HappyHelpers
       end
 
       def url_for(*what)
+        return what.first if what.size == 1 && what.first =~ %r{://}
+
         result = what.flatten.inject('') do |url, item|
           url << "/%s" % case item
             when String, Symbol then item.to_s
