@@ -16,4 +16,10 @@ Gem::Specification.new do |gem|
   gem.version       = HappyHelpers::VERSION
 
   gem.add_dependency 'tilt', '~> 1.3'
+  gem.add_dependency 'i18n'
+  gem.add_dependency 'money', '~> 5.0'
+
+  gem.add_development_dependency 'rspec'
+  gem.add_development_dependency 'rake'
+  gem.add_development_dependency 'watchr'
 end
