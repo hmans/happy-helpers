@@ -1,3 +1,5 @@
+require 'active_support/core_ext'
+
 module HappyHelpers
   module Helpers
     module Html
