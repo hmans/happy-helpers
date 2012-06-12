@@ -1,4 +1,5 @@
 require 'active_support/core_ext'
+require 'cgi'
 
 module HappyHelpers
   module Helpers
