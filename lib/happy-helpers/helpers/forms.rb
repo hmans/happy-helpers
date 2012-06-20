@@ -76,11 +76,13 @@ module HappyHelpers
           :method => 'post'
         }.merge(options)
 
-        concat_output html_tag(:form, options) do
+        form_html = html_tag(:form, options) do
           capture_template_block do
             yield FormBuilder.new(self, resource, options)
           end
         end
+
+        concat_output form_html
       end
 
       class FormBuilder
